@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth scroll-pt-20">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大田区カフェ＆ベーカリー（仮）｜ 蒲田・カフェ・ベーカリー サンプルサイト</title>
+  <meta name="description" content="蒲田駅から徒歩3分。自家焙煎の珈琲と、毎朝焼き上がる小さなパン屋のカフェ＆ベーカリー。モーニングからテイクアウトまで。本サイトはSNSコンサル提案用のサンプルです。">
+
+  <!-- Fonts: DM Serif Display / Jost / Zen Maru Gothic（v1・v2と完全に別ファミリー） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jost:wght@300;400;500&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#F6EFE4',  // 生成りクリーム（背景）
+            milk:  '#FBF7F0',  // ミルクホワイト
+            espr:  '#3B2A21',  // エスプレッソ（文字）
+            bean:  '#6B4A33',  // 焙煎豆ブラウン
+            sage:  '#8C9A7B',  // セージグリーン
+            terra: '#C8704F',  // テラコッタ
+            crust: '#D8B27C',  // 焼き色クラスト
+            line:  '#E3D8C6',  // 罫線
+            sub:   '#8A7A6A',  // サブテキスト
+          },
+          fontFamily: {
+            disp:  ['"DM Serif Display"', 'serif'],
+            latin: ['"Jost"', 'sans-serif'],
+            jp:    ['"Zen Maru Gothic"', '"Noto Sans JP"', 'sans-serif'],
+          },
+          letterSpacing: {
+            wide2: '.14em',
+            jumbo: '.32em',
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    html, body { background: #F6EFE4; color: #3B2A21; }
+    body { font-family: '"Zen Maru Gothic"', '"Noto Sans JP"', sans-serif; -webkit-font-smoothing: antialiased; }
+
+    /* スクロールリビール */
+    .reveal { opacity: 0; transform: translateY(28px); transition: all 1s cubic-bezier(.16,1,.3,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 120ms; }
+    .reveal-delay-2 { transition-delay: 240ms; }
+    .reveal-delay-3 { transition-delay: 360ms; }
+
+    /* 紙の粒子テクスチャ（明るめ・控えめ） */
+    .grain { position: relative; }
+    .grain::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    /* ヘアライン */
+    .hair { height: 1px; background: linear-gradient(90deg, transparent, #C8704F 18%, #C8704F 82%, transparent); }
+    .hair-soft { height: 1px; background: linear-gradient(90deg, transparent, #E3D8C6 12%, #E3D8C6 88%, transparent); }
+
+    /* 写真ホバーのズーム */
+    .ph { transition: transform 1.4s cubic-bezier(.16,1,.3,1), filter .6s ease; }
+    .ph-card:hover .ph { transform: scale(1.05); filter: saturate(1.06) brightness(1.02); }
+
+    /* ナビ下線 */
+    .nav-a { position: relative; }
+    .nav-a::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 1.5px; background: #C8704F; transition: width .5s ease; border-radius: 2px; }
+    .nav-a:hover::after { width: 100%; }
+
+    /* 大きな英字見出し */
+    .h-en { font-family: 'DM Serif Display', serif; letter-spacing: 0; }
+    .h-en-it { font-family: 'DM Serif Display', serif; font-style: italic; }
+
+    /* 透かしの大きな英字 */
+    .wash {
+      font-family: 'DM Serif Display', serif; font-style: italic;
+      color: rgba(59,42,33,0.045); line-height: .85; user-select: none; pointer-events: none;
+    }
+
+    /* セクション番号 */
+    .sec-num { font-family: 'Jost', sans-serif; font-weight: 500; color: #C8704F; font-size: 12px; letter-spacing: .28em; text-transform: uppercase; }
+
+    /* 焼き色のドットパターン（やわらかい点描背景） */
+    .dots-bg {
+      background-image: radial-gradient(rgba(200,112,79,0.10) 1.4px, transparent 1.4px);
+      background-size: 22px 22px;
+    }
+
+    /* セージのリーフパターン（柔らかい有機ライン） */
+    .leaf-bg {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60' width='60' height='60'%3E%3Cg fill='none' stroke='%238C9A7B' stroke-width='0.7' opacity='0.16'%3E%3Cpath d='M10,50 Q30,30 50,10'/%3E%3Cpath d='M18,52 Q26,42 22,32'/%3E%3Cpath d='M42,8 Q34,18 38,28'/%3E%3C/g%3E%3C/svg%3E");
+      background-size: 60px 60px;
+    }
+
+    /* やわらかい光のにじみ */
+    .glow-warm {
+      background: radial-gradient(ellipse 55% 45% at 82% 14%, rgba(216,178,124,0.28), transparent 65%),
+                  radial-gradient(ellipse 50% 50% at 8% 92%, rgba(140,154,123,0.18), transparent 70%);
+    }
+
+    /* やわらかい影（角丸カード用） */
+    .shadow-soft { box-shadow: 0 1px 0 rgba(59,42,33,0.03), 0 22px 44px -28px rgba(59,42,33,0.28); }
+
+    /* 焼き印スタンプ（円） */
+    .stamp {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 92px; height: 92px; border-radius: 9999px;
+      background: #C8704F; color: #FBF7F0;
+      font-family: 'Zen Maru Gothic', sans-serif; font-weight: 700;
+      transform: rotate(-7deg);
+      box-shadow: 0 10px 26px -8px rgba(200,112,79,0.55);
+    }
+
+    /* ボタン（塗り） */
+    .btn-fill {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px; background: #3B2A21; color: #FBF7F0;
+      font-family: 'Jost', sans-serif; letter-spacing: .12em; font-size: 13px;
+      border: 1.5px solid #3B2A21; border-radius: 9999px; transition: all .4s ease;
+      position: relative; overflow: hidden;
+    }
+    .btn-fill::before { content: ''; position: absolute; inset: 0; background: #C8704F; transform: translateX(-101%); transition: transform .45s cubic-bezier(.16,1,.3,1); }
+    .btn-fill span { position: relative; z-index: 2; }
+    .btn-fill:hover::before { transform: translateX(0); }
+    .btn-fill:hover { border-color: #C8704F; }
+
+    /* ボタン（線） */
+    .btn-line {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 26px; background: transparent; color: #3B2A21;
+      font-family: 'Jost', sans-serif; letter-spacing: .12em; font-size: 13px;
+      border: 1.5px solid #3B2A21; border-radius: 9999px; transition: all .35s ease;
+    }
+    .btn-line:hover { background: #3B2A21; color: #FBF7F0; }
+
+    /* 価格行のドットリーダー */
+    .price-row { display: flex; align-items: baseline; gap: 10px; }
+    .price-row .dots { flex: 1; border-bottom: 1.5px dotted #D8B27C; transform: translateY(-3px); opacity: .7; }
+
+    /* マーキー */
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .marquee-track { display: inline-flex; gap: 56px; white-space: nowrap; animation: marquee 36s linear infinite; }
+
+    /* スクロールサイン */
+    @keyframes drip { 0% { transform: translateY(-100%); opacity: 0; } 40% { opacity: 1; } 100% { transform: translateY(100%); opacity: 0; } }
+    .scroll-line::after { content: ''; position: absolute; top: 0; left: 50%; width: 1.5px; height: 60%; background: #C8704F; border-radius: 2px; animation: drip 2.6s cubic-bezier(.77,0,.175,1) infinite; }
+
+    /* 湯気のゆらぎ */
+    @keyframes steam { 0% { opacity: 0; transform: translateY(0) scaleX(1); } 30% { opacity: .8; } 100% { opacity: 0; transform: translateY(-22px) scaleX(1.4); } }
+    .steam span { display: block; width: 2px; height: 18px; background: linear-gradient(to top, transparent, #FBF7F0); border-radius: 2px; opacity: 0; animation: steam 3.2s ease-in-out infinite; }
+    .steam span:nth-child(2) { animation-delay: .9s; }
+    .steam span:nth-child(3) { animation-delay: 1.8s; }
+
+    /* タグ・チップ */
+    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 9999px; font-size: 11px; letter-spacing: .08em; }
+
+    /* ヘッダー吸着 */
+    .nav-stick { transition: top .35s ease, background-color .35s ease, border-color .35s ease, padding .35s ease; }
+    .nav-stick.scrolled { top: 0 !important; background: rgba(251,247,240,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid #E3D8C6; }
+    .nav-stick.scrolled .nav-inner { padding-top: 12px; padding-bottom: 12px; }
+
+    /* モバイルCTA */
+    @media (min-width: 768px) { .mobile-cta { display: none; } }
+
+    /* 数字（焙煎データ等） */
+    .stat-num { font-family: 'DM Serif Display', serif; font-size: 56px; line-height: 1; color: #C8704F; }
+  </style>
+</head>
+
+<body class="font-jp">
+
+  <!-- ============================== ANNOUNCEMENT BAR ============================== -->
+  <div class="bg-bean text-cream text-[11px] tracking-wide2 py-2 overflow-hidden font-latin">
+    <div class="marquee-track">
+      <span><i class="fa-solid fa-mug-hot text-crust mr-2"></i>蒲田駅 東口 徒歩3分・テラス席＆店内16席</span>
+      <span><i class="fa-solid fa-bread-slice text-crust mr-2"></i>毎朝8時、焼きたてのパンが並びます</span>
+      <span><i class="fa-solid fa-seedling text-crust mr-2"></i>自家焙煎の珈琲豆、量り売りはじめました</span>
+      <span><i class="fa-solid fa-clock text-crust mr-2"></i>モーニング 8:00–11:00 ／ テイクアウトOK</span>
+      <span><i class="fa-solid fa-mug-hot text-crust mr-2"></i>蒲田駅 東口 徒歩3分・テラス席＆店内16席</span>
+      <span><i class="fa-solid fa-bread-slice text-crust mr-2"></i>毎朝8時、焼きたてのパンが並びます</span>
+      <span><i class="fa-solid fa-seedling text-crust mr-2"></i>自家焙煎の珈琲豆、量り売りはじめました</span>
+      <span><i class="fa-solid fa-clock text-crust mr-2"></i>モーニング 8:00–11:00 ／ テイクアウトOK</span>
+    </div>
+  </div>
+
+  <!-- ============================== NAV ============================== -->
+  <nav id="nav" class="nav-stick fixed top-7 left-0 right-0 z-50">
+    <div class="nav-inner max-w-[1440px] mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
+      <a href="#top" class="flex items-center gap-3">
+        <span class="font-disp text-terra text-xl md:text-2xl leading-none whitespace-nowrap">大田区カフェ＆ベーカリー</span>
+        <span class="hidden md:flex flex-col leading-tight text-[10px] tracking-wide2 text-sub font-latin">
+          <span>SAMPLE / OTA CAFE &amp; BAKERY</span>
+          <span class="font-jp tracking-normal">蒲田・カフェ＆パン屋</span>
+        </span>
+      </a>
+
+      <div class="hidden lg:flex items-center gap-9 text-[12px] tracking-wide2">
+        <a href="#concept" class="nav-a">コンセプト</a>
+        <a href="#menu" class="nav-a">メニュー</a>
+        <a href="#gallery" class="nav-a">ギャラリー</a>
+        <a href="#info" class="nav-a">店舗情報</a>
+        <a href="#access" class="nav-a">アクセス</a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="#takeout" class="hidden md:inline-flex items-center gap-2 px-4 py-2 border border-espr rounded-full text-[11px] tracking-wide2 hover:bg-espr hover:text-milk transition-colors">
+          <i class="fa-solid fa-bag-shopping"></i> テイクアウト
+        </a>
+        <a href="#instagram" class="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-terra text-milk rounded-full text-[11px] tracking-wide2 hover:bg-espr transition-colors">
+          <i class="fa-brands fa-instagram"></i> @sample_kamata_cafe
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================== HERO ============================== -->
+  <header id="top" class="relative pt-36 md:pt-44 pb-20 md:pb-28 overflow-hidden">
+    <div class="absolute inset-0 glow-warm pointer-events-none"></div>
+    <div class="absolute -top-16 right-0 wash text-[200px] md:text-[300px]">fresh</div>
+
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12 relative">
+      <div class="grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+        <!-- 左：コピー -->
+        <div class="md:col-span-5">
+          <div class="flex items-center gap-3 mb-7 reveal">
+            <span class="sec-num">Vol.03 — Kamata</span>
+            <span class="hair w-12"></span>
+          </div>
+          <h1 class="reveal reveal-delay-1 leading-[1.05]">
+            <span class="h-en block text-5xl md:text-6xl lg:text-7xl text-espr">Slow</span>
+            <span class="h-en-it block text-5xl md:text-6xl lg:text-7xl text-terra -mt-1">morning,</span>
+            <span class="h-en block text-5xl md:text-6xl lg:text-7xl text-espr -mt-1">warm bread.</span>
+          </h1>
+          <p class="mt-7 text-[14px] md:text-[15px] leading-loose text-bean/90 max-w-md reveal reveal-delay-2">
+            蒲田の朝に、ちいさな灯りを。<br>
+            自家焙煎の珈琲と、毎朝焼き上がるパン。<br>
+            余白のある一杯と、ひとくちの幸せを。
+          </p>
+          <div class="mt-9 flex flex-wrap items-center gap-3 reveal reveal-delay-3">
+            <a href="#menu" class="btn-fill"><span><i class="fa-solid fa-mug-hot mr-2"></i>メニューを見る</span></a>
+            <a href="#takeout" class="btn-line"><i class="fa-solid fa-bag-shopping"></i> テイクアウト</a>
+          </div>
+
+          <div class="mt-10 flex items-center gap-7 text-[12px] text-sub reveal reveal-delay-3">
+            <div><span class="font-disp text-2xl text-bean">8:00</span><span class="ml-2">OPEN</span></div>
+            <span class="w-px h-8 bg-line"></span>
+            <div><span class="font-disp text-2xl text-bean">3</span><span class="ml-2">分／蒲田駅</span></div>
+            <span class="w-px h-8 bg-line"></span>
+            <div><span class="font-disp text-2xl text-bean">自家焙煎</span></div>
+          </div>
+        </div>
+
+        <!-- 右：写真コラージュ -->
+        <div class="md:col-span-7 grid grid-cols-6 gap-3 md:gap-4">
+          <div class="col-span-4 row-span-2 ph-card overflow-hidden rounded-[28px] reveal">
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1400&q=80"
+                 alt="明るいカフェの店内" class="ph w-full h-full object-cover aspect-[4/5]">
+          </div>
+          <div class="col-span-2 ph-card overflow-hidden rounded-[24px] reveal reveal-delay-1">
+            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=700&q=80"
+                 alt="焼きたてのパン" class="ph w-full h-full object-cover aspect-square">
+          </div>
+          <div class="col-span-2 ph-card overflow-hidden rounded-[24px] reveal reveal-delay-2 relative">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=700&q=80"
+                 alt="ラテアートの珈琲" class="ph w-full h-full object-cover aspect-square">
+            <!-- 湯気の演出 -->
+            <div class="steam absolute top-3 left-1/2 -translate-x-1/2 flex gap-2">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="col-span-3 ph-card overflow-hidden rounded-[24px] reveal reveal-delay-1">
+            <img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=900&q=80"
+                 alt="クロワッサンとペストリー" class="ph w-full h-full object-cover aspect-[4/3]">
+          </div>
+          <div class="col-span-3 ph-card overflow-hidden rounded-[24px] reveal reveal-delay-2">
+            <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=900&q=80"
+                 alt="窓辺のカフェテーブル" class="ph w-full h-full object-cover aspect-[4/3]">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- スクロールサイン -->
+    <div class="hidden md:flex absolute bottom-2 left-1/2 -translate-x-1/2 items-center gap-3 text-sub text-[10px] tracking-jumbo font-latin">
+      <span>SCROLL</span>
+      <span class="relative inline-block w-px h-12 bg-line overflow-hidden scroll-line"></span>
+    </div>
+  </header>
+
+  <!-- ============================== TODAY'S BAKE / MORNING BAND ============================== -->
+  <section class="relative bg-bean text-cream overflow-hidden">
+    <div class="absolute inset-0 dots-bg opacity-50"></div>
+    <div class="max-w-[1280px] mx-auto px-6 md:px-12 py-12 md:py-16 relative">
+      <div class="grid md:grid-cols-12 gap-8 md:gap-12 items-center">
+        <div class="md:col-span-7 reveal">
+          <div class="flex items-center gap-3 mb-3 text-crust">
+            <i class="fa-solid fa-bread-slice"></i>
+            <span class="text-[11px] tracking-jumbo font-latin">TODAY&rsquo;S BAKE</span>
+          </div>
+          <h2 class="font-disp text-3xl md:text-4xl leading-tight">
+            本日の焼き上がり、<span class="text-crust">8時から。</span>
+          </h2>
+          <p class="mt-4 text-[13px] leading-relaxed text-cream/85 max-w-xl">
+            カンパーニュ、クロワッサン、あんバター、季節のデニッシュ。<br>
+            焼き上がり時間はその日のInstagramでお知らせしています。
+          </p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="chip bg-cream/10 text-cream"><i class="fa-solid fa-wheat-awn text-crust"></i> カンパーニュ</span>
+            <span class="chip bg-cream/10 text-cream"><i class="fa-solid fa-cookie-bite text-crust"></i> クロワッサン</span>
+            <span class="chip bg-cream/10 text-cream"><i class="fa-solid fa-stroopwafel text-crust"></i> あんバター</span>
+            <span class="chip bg-cream/10 text-cream"><i class="fa-solid fa-apple-whole text-crust"></i> 季節のデニッシュ</span>
+          </div>
+        </div>
+        <div class="md:col-span-5 reveal reveal-delay-1">
+          <div class="bg-cream text-espr rounded-[24px] p-7 md:p-8 shadow-soft">
+            <div class="flex items-center justify-between">
+              <span class="sec-num">Morning</span>
+              <span class="stamp text-[11px] text-center leading-tight">朝<br>限定</span>
+            </div>
+            <h3 class="font-disp text-2xl mt-4">モーニング 8:00–11:00</h3>
+            <ul class="mt-4 space-y-2.5 text-[13px]">
+              <li class="price-row"><span>トーストセット（珈琲付）</span><span class="dots"></span><span class="font-disp">¥680</span></li>
+              <li class="price-row"><span>クロワッサンプレート</span><span class="dots"></span><span class="font-disp">¥880</span></li>
+              <li class="price-row"><span>あんバターサンド＋珈琲</span><span class="dots"></span><span class="font-disp">¥780</span></li>
+            </ul>
+            <p class="mt-4 text-[11px] text-sub">＊ドリンクは＋¥150でラテに変更できます。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== CONCEPT / こだわり ============================== -->
+  <section id="concept" class="relative py-24 md:py-36 overflow-hidden">
+    <div class="absolute -top-10 left-0 wash text-[220px] md:text-[340px]">roast</div>
+
+    <div class="max-w-[1280px] mx-auto px-6 md:px-12 relative">
+      <div class="text-center mb-16 md:mb-24 reveal">
+        <div class="sec-num mb-3">01 / Concept</div>
+        <h2 class="font-disp text-3xl md:text-5xl leading-tight">
+          豆と、小麦と、<span class="text-terra">朝の光。</span>
+        </h2>
+        <p class="mt-5 text-[14px] leading-loose text-bean/85 max-w-xl mx-auto">
+          飾らない素材を、ていねいに。<br>
+          二つのこだわりが、この店の毎日をつくっています。
+        </p>
+      </div>
+
+      <!-- 豆 -->
+      <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-center mb-20 md:mb-28">
+        <div class="ph-card overflow-hidden rounded-[28px] shadow-soft reveal">
+          <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&q=80"
+               alt="自家焙煎の珈琲豆" class="ph w-full object-cover aspect-[4/3]">
+        </div>
+        <div class="reveal reveal-delay-1">
+          <span class="chip bg-terra/10 text-terra"><i class="fa-solid fa-seedling"></i> 自家焙煎</span>
+          <h3 class="font-disp text-2xl md:text-3xl mt-4 leading-snug">店の奥で、毎朝焙煎する。</h3>
+          <p class="mt-4 text-[14px] leading-loose text-bean/85">
+            中米とアフリカのシングルオリジンを中心に、店主が小さな焙煎機で少しずつ。<br>
+            浅煎りの華やかさも、深煎りのほろ苦さも。その日の気分で選べるように、
+            いつも3〜4種類を用意しています。
+          </p>
+          <ul class="mt-6 space-y-2.5 text-[13px] text-bean">
+            <li class="flex items-center gap-3"><i class="fa-solid fa-mug-hot text-terra"></i> ハンドドリップ／エスプレッソ どちらも</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-bag-shopping text-terra"></i> 焙煎豆の量り売り（100gから）</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-heart text-terra"></i> カフェインレスも常時1種</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 小麦 -->
+      <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-center md:[&>div:first-child]:order-2">
+        <div class="ph-card overflow-hidden rounded-[28px] shadow-soft reveal">
+          <img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=1200&q=80"
+               alt="国産小麦のパン生地" class="ph w-full object-cover aspect-[4/3]">
+        </div>
+        <div class="reveal reveal-delay-1">
+          <span class="chip bg-sage/15 text-sage"><i class="fa-solid fa-wheat-awn"></i> 国産小麦</span>
+          <h3 class="font-disp text-2xl md:text-3xl mt-4 leading-snug">小麦の香りを、まっすぐに。</h3>
+          <p class="mt-4 text-[14px] leading-loose text-bean/85">
+            北海道産の小麦と、自家製の発酵種。<br>
+            添加物にたよらず、時間をかけて低温熟成させたパンは、
+            噛むほどに小麦そのものの甘みが広がります。
+          </p>
+          <ul class="mt-6 space-y-2.5 text-[13px] text-bean">
+            <li class="flex items-center gap-3"><i class="fa-solid fa-clock text-sage"></i> 前日仕込み・低温長時間発酵</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-bread-slice text-sage"></i> ハード系からデニッシュまで</li>
+            <li class="flex items-center gap-3"><i class="fa-solid fa-leaf text-sage"></i> 季節のフルーツを使った限定パン</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== MENU ============================== -->
+  <section id="menu" class="relative py-20 md:py-32 bg-milk overflow-hidden">
+    <div class="absolute inset-0 leaf-bg opacity-60"></div>
+
+    <div class="max-w-[1280px] mx-auto px-6 md:px-12 relative">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+        <div class="reveal">
+          <div class="sec-num mb-3">02 / Menu</div>
+          <h2 class="font-disp text-3xl md:text-5xl leading-tight">メニュー</h2>
+          <p class="mt-4 text-[13px] text-sub leading-relaxed max-w-md">
+            すべて税込価格です。パンは仕込み状況により内容が変わることがあります。
+          </p>
+        </div>
+        <div class="reveal reveal-delay-1 flex items-center gap-4 text-[11px] tracking-wide2 text-sub">
+          <span><i class="fa-solid fa-fire text-terra mr-2"></i>人気</span>
+          <span><i class="fa-solid fa-leaf text-sage mr-2"></i>季節限定</span>
+        </div>
+      </div>
+
+      <!-- カテゴリ：コーヒー / パン / フード -->
+      <div class="grid md:grid-cols-3 gap-6 md:gap-8 mb-16">
+        <!-- コーヒー -->
+        <div class="ph-card overflow-hidden rounded-[28px] bg-cream shadow-soft reveal">
+          <div class="overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=900&q=80"
+                 alt="ラテとコーヒー" class="ph w-full aspect-[4/3] object-cover">
+          </div>
+          <div class="p-6 md:p-7">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="font-disp text-2xl">コーヒー</span>
+              <span class="hair-soft flex-1"></span>
+              <span class="font-latin text-[11px] tracking-wide2 text-terra">COFFEE</span>
+            </div>
+            <ul class="space-y-3 text-[14px]">
+              <li class="price-row"><span>本日のドリップ</span><span class="dots"></span><span class="font-disp">¥480</span></li>
+              <li class="price-row"><span>カフェラテ <span class="text-[10px] text-terra ml-1">人気</span></span><span class="dots"></span><span class="font-disp">¥550</span></li>
+              <li class="price-row"><span>カプチーノ</span><span class="dots"></span><span class="font-disp">¥520</span></li>
+              <li class="price-row"><span>エスプレッソ</span><span class="dots"></span><span class="font-disp">¥400</span></li>
+              <li class="price-row"><span>季節のフレーバーラテ <span class="text-[10px] text-sage ml-1">季節</span></span><span class="dots"></span><span class="font-disp">¥620</span></li>
+              <li class="price-row"><span>カフェインレス</span><span class="dots"></span><span class="font-disp">¥500</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- パン -->
+        <div class="ph-card overflow-hidden rounded-[28px] bg-cream shadow-soft reveal reveal-delay-1">
+          <div class="overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1568254183919-78a4f43a2877?w=900&q=80"
+                 alt="ベーカリーのパン棚" class="ph w-full aspect-[4/3] object-cover">
+          </div>
+          <div class="p-6 md:p-7">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="font-disp text-2xl">パン</span>
+              <span class="hair-soft flex-1"></span>
+              <span class="font-latin text-[11px] tracking-wide2 text-terra">BAKERY</span>
+            </div>
+            <ul class="space-y-3 text-[14px]">
+              <li class="price-row"><span>クロワッサン <span class="text-[10px] text-terra ml-1">人気</span></span><span class="dots"></span><span class="font-disp">¥320</span></li>
+              <li class="price-row"><span>あんバターサンド</span><span class="dots"></span><span class="font-disp">¥420</span></li>
+              <li class="price-row"><span>カンパーニュ（ハーフ）</span><span class="dots"></span><span class="font-disp">¥480</span></li>
+              <li class="price-row"><span>くるみのカンパーニュ</span><span class="dots"></span><span class="font-disp">¥520</span></li>
+              <li class="price-row"><span>季節のフルーツデニッシュ <span class="text-[10px] text-sage ml-1">季節</span></span><span class="dots"></span><span class="font-disp">¥480</span></li>
+              <li class="price-row"><span>塩バターロール</span><span class="dots"></span><span class="font-disp">¥260</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- フード -->
+        <div class="ph-card overflow-hidden rounded-[28px] bg-cream shadow-soft reveal reveal-delay-2">
+          <div class="overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=900&q=80"
+                 alt="サンドイッチとプレート" class="ph w-full aspect-[4/3] object-cover">
+          </div>
+          <div class="p-6 md:p-7">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="font-disp text-2xl">フード</span>
+              <span class="hair-soft flex-1"></span>
+              <span class="font-latin text-[11px] tracking-wide2 text-terra">FOOD</span>
+            </div>
+            <ul class="space-y-3 text-[14px]">
+              <li class="price-row"><span>たまごサンド <span class="text-[10px] text-terra ml-1">人気</span></span><span class="dots"></span><span class="font-disp">¥680</span></li>
+              <li class="price-row"><span>BLTサンド</span><span class="dots"></span><span class="font-disp">¥780</span></li>
+              <li class="price-row"><span>本日のキッシュ</span><span class="dots"></span><span class="font-disp">¥720</span></li>
+              <li class="price-row"><span>季節のスープセット <span class="text-[10px] text-sage ml-1">季節</span></span><span class="dots"></span><span class="font-disp">¥880</span></li>
+              <li class="price-row"><span>自家製グラノーラヨーグルト</span><span class="dots"></span><span class="font-disp">¥620</span></li>
+              <li class="price-row"><span>ガトーショコラ</span><span class="dots"></span><span class="font-disp">¥520</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 reveal">
+        <span class="hair flex-1"></span>
+        <span class="text-[11px] tracking-jumbo text-sub font-latin">SEASONAL ITEMS CHANGE WEEKLY</span>
+        <span class="hair flex-1"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== GALLERY ============================== -->
+  <section id="gallery" class="relative py-24 md:py-36 overflow-hidden">
+    <div class="max-w-[1280px] mx-auto px-6 md:px-12">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 reveal">
+        <div>
+          <div class="sec-num mb-3">03 / Gallery</div>
+          <h2 class="font-disp text-3xl md:text-5xl leading-tight">店内ギャラリー</h2>
+        </div>
+        <p class="text-[13px] text-sub leading-relaxed max-w-sm">
+          木とグリーンに囲まれた、明るいワンフロア。<br>
+          ひとりでも、誰かとでも、ゆっくり過ごせる場所です。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div class="ph-card overflow-hidden rounded-[24px] row-span-2 reveal">
+          <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=900&q=80"
+               alt="窓辺の席とグリーン" class="ph w-full h-full object-cover aspect-[3/4] md:aspect-[3/5]">
+        </div>
+        <div class="ph-card overflow-hidden rounded-[24px] reveal reveal-delay-1">
+          <img src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=700&q=80"
+               alt="カウンターとエスプレッソマシン" class="ph w-full h-full object-cover aspect-square">
+        </div>
+        <div class="ph-card overflow-hidden rounded-[24px] reveal reveal-delay-2">
+          <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=700&q=80"
+               alt="木のテーブルとパン" class="ph w-full h-full object-cover aspect-square">
+        </div>
+        <div class="ph-card overflow-hidden rounded-[24px] col-span-2 reveal reveal-delay-1">
+          <img src="https://images.unsplash.com/photo-1559305616-3f99cd43e353?w=1000&q=80"
+               alt="ペストリーのショーケース" class="ph w-full h-full object-cover aspect-[16/9]">
+        </div>
+        <div class="ph-card overflow-hidden rounded-[24px] reveal reveal-delay-2">
+          <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=700&q=80"
+               alt="ラテと本のある席" class="ph w-full h-full object-cover aspect-square">
+        </div>
+        <div class="ph-card overflow-hidden rounded-[24px] reveal reveal-delay-1">
+          <img src="https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=700&q=80"
+               alt="焼きたてのクロワッサン" class="ph w-full h-full object-cover aspect-square">
+        </div>
+        <div class="ph-card overflow-hidden rounded-[24px] col-span-2 reveal reveal-delay-2">
+          <img src="https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=1000&q=80"
+               alt="テラス席のテーブル" class="ph w-full h-full object-cover aspect-[16/9]">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== TAKEOUT ============================== -->
+  <section id="takeout" class="relative py-20 md:py-28 bg-sage/15 overflow-hidden">
+    <div class="absolute inset-0 leaf-bg opacity-50"></div>
+    <div class="max-w-[1280px] mx-auto px-6 md:px-12 relative">
+      <div class="grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+        <div class="md:col-span-6 ph-card overflow-hidden rounded-[28px] shadow-soft reveal">
+          <img src="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=1200&q=80"
+               alt="テイクアウトの珈琲カップ" class="ph w-full object-cover aspect-[4/3]">
+        </div>
+        <div class="md:col-span-6 reveal reveal-delay-1">
+          <div class="sec-num mb-3">04 / Take out</div>
+          <h2 class="font-disp text-3xl md:text-5xl leading-tight">
+            その一杯を、<span class="text-sage">持ち歩く。</span>
+          </h2>
+          <p class="mt-5 text-[14px] leading-loose text-bean/85 max-w-lg">
+            出勤前の珈琲も、午後の散歩のおともにも。<br>
+            ドリンクとパンはすべてテイクアウトできます。
+            パンの詰め合わせや手土産のご相談も、お気軽にどうぞ。
+          </p>
+          <div class="mt-8 grid grid-cols-3 gap-3 md:gap-4">
+            <div class="bg-cream rounded-[20px] p-5 text-center shadow-soft">
+              <i class="fa-solid fa-mug-hot text-terra text-2xl"></i>
+              <div class="mt-3 text-[13px] font-medium">ドリンク</div>
+              <div class="text-[11px] text-sub mt-1">全品 −¥50</div>
+            </div>
+            <div class="bg-cream rounded-[20px] p-5 text-center shadow-soft">
+              <i class="fa-solid fa-bread-slice text-terra text-2xl"></i>
+              <div class="mt-3 text-[13px] font-medium">パン詰合せ</div>
+              <div class="text-[11px] text-sub mt-1">¥1,000〜</div>
+            </div>
+            <div class="bg-cream rounded-[20px] p-5 text-center shadow-soft">
+              <i class="fa-solid fa-gift text-terra text-2xl"></i>
+              <div class="mt-3 text-[13px] font-medium">手土産BOX</div>
+              <div class="text-[11px] text-sub mt-1">要予約</div>
+            </div>
+          </div>
+          <a href="#instagram" class="mt-8 btn-line"><i class="fa-brands fa-instagram"></i> ご予約・お問い合わせ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== STORE INFO ============================== -->
+  <section id="info" class="relative py-24 md:py-32">
+    <div class="max-w-[1280px] mx-auto px-6 md:px-12">
+      <div class="grid md:grid-cols-12 gap-12">
+        <!-- 左：情報テーブル -->
+        <div class="md:col-span-7 reveal">
+          <div class="sec-num mb-3">05 / Store information</div>
+          <h2 class="font-disp text-3xl md:text-5xl leading-tight mb-10">店舗情報</h2>
+
+          <dl class="divide-y divide-line">
+            <div class="grid grid-cols-12 py-4 text-[14px]">
+              <dt class="col-span-4 md:col-span-3 text-sub text-[12px] tracking-wide2 pt-1">店名</dt>
+              <dd class="col-span-8 md:col-span-9">大田区カフェ＆ベーカリー（仮）<span class="text-[11px] text-sub ml-2">＊本サイトはサンプルです</span></dd>
+            </div>
+            <div class="grid grid-cols-12 py-4 text-[14px]">
+              <dt class="col-span-4 md:col-span-3 text-sub text-[12px] tracking-wide2 pt-1">業態</dt>
+              <dd class="col-span-8 md:col-span-9">カフェ ／ ベーカリー（自家焙煎珈琲・自家製パン）</dd>
+            </div>
+            <div class="grid grid-cols-12 py-4 text-[14px]">
+              <dt class="col-span-4 md:col-span-3 text-sub text-[12px] tracking-wide2 pt-1">住所</dt>
+              <dd class="col-span-8 md:col-span-9">
+                〒144-0051<br>
+                東京都大田区蒲田4-XX-XX 蒲田グリーンビル 1F<br>
+                <a href="https://maps.google.com/?q=蒲田駅" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-2 text-terra text-[12px] border-b border-terra hover:opacity-75">
+                  <i class="fa-solid fa-map-location-dot"></i> Google Mapで開く
+                </a>
+              </dd>
+            </div>
+            <div class="grid grid-cols-12 py-4 text-[14px]">
+              <dt class="col-span-4 md:col-span-3 text-sub text-[12px] tracking-wide2 pt-1">電話</dt>
+              <dd class="col-span-8 md:col-span-9"><a href="tel:0300000000" class="hover:text-terra">03-0000-0000</a></dd>
+            </div>
+            <div class="grid grid-cols-12 py-4 text-[14px]">
+              <dt class="col-span-4 md:col-span-3 text-sub text-[12px] tracking-wide2 pt-1">営業時間</dt>
+              <dd class="col-span-8 md:col-span-9">
+                <div class="space-y-1.5">
+                  <div class="flex justify-between border-b border-line pb-1.5 max-w-md">
+                    <span>月〜金</span><span class="font-disp">8:00 — 19:00</span>
+                  </div>
+                  <div class="flex justify-between border-b border-line pb-1.5 max-w-md">
+                    <span>土・日・祝</span><span class="font-disp">8:00 — 18:00</span>
+                  </div>
+                  <div class="flex justify-between max-w-md">
+                    <span>モーニング</span><span class="font-disp">8:00 — 11:00</span>
+                  </div>
+                </div>
+              </dd>
+            </div>
+            <div class="grid grid-cols-12 py-4 text-[14px]">
+              <dt class="col-span-4 md:col-span-3 text-sub text-[12px] tracking-wide2 pt-1">定休日</dt>
+              <dd class="col-span-8 md:col-span-9">火曜日（祝日の場合は翌日 ／ Instagramにて告知）</dd>
+            </div>
+            <div class="grid grid-cols-12 py-4 text-[14px]">
+              <dt class="col-span-4 md:col-span-3 text-sub text-[12px] tracking-wide2 pt-1">席数</dt>
+              <dd class="col-span-8 md:col-span-9">16席（店内12席 ／ テラス4席）</dd>
+            </div>
+            <div class="grid grid-cols-12 py-4 text-[14px]">
+              <dt class="col-span-4 md:col-span-3 text-sub text-[12px] tracking-wide2 pt-1">支払い</dt>
+              <dd class="col-span-8 md:col-span-9">現金 ／ クレジット（VISA・Master・JCB・Amex） ／ PayPay ／ 交通系IC</dd>
+            </div>
+            <div class="grid grid-cols-12 py-4 text-[14px]">
+              <dt class="col-span-4 md:col-span-3 text-sub text-[12px] tracking-wide2 pt-1">SNS</dt>
+              <dd class="col-span-8 md:col-span-9 flex flex-wrap gap-3 text-[12px]">
+                <a href="#instagram" class="px-3 py-1.5 border border-espr rounded-full hover:bg-espr hover:text-milk transition-colors"><i class="fa-brands fa-instagram mr-2"></i>@sample_kamata_cafe</a>
+                <a href="#" class="px-3 py-1.5 border border-espr rounded-full hover:bg-espr hover:text-milk transition-colors"><i class="fa-brands fa-x-twitter mr-2"></i>@sample_kamata_cafe</a>
+                <a href="#" class="px-3 py-1.5 border border-espr rounded-full hover:bg-espr hover:text-milk transition-colors"><i class="fa-brands fa-line mr-2"></i>LINE公式</a>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- 右：写真 + ガイドカード -->
+        <div class="md:col-span-5 space-y-6">
+          <div class="ph-card overflow-hidden rounded-[28px] shadow-soft reveal reveal-delay-1">
+            <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=900&q=80"
+                 alt="店舗の外観・店内" class="ph w-full object-cover aspect-[4/5]">
+          </div>
+          <div class="reveal reveal-delay-2 bg-bean text-cream rounded-[24px] p-7 shadow-soft">
+            <h3 class="font-disp text-xl mb-3">ご利用ガイド</h3>
+            <ul class="space-y-2 text-[13px] leading-relaxed text-cream/90">
+              <li>・モーニングは8:00–11:00、ラストオーダーは閉店30分前です。</li>
+              <li>・テラス席はペット同伴OK（店内は不可）。</li>
+              <li>・Wi-Fi／電源あり。お仕事・読書にもどうぞ。</li>
+              <li>・パンの取り置きはInstagram DMで承ります。</li>
+              <li>・食物アレルギーは事前にお知らせください。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== ACCESS ============================== -->
+  <section id="access" class="relative py-20 md:py-28 bg-milk">
+    <div class="max-w-[1280px] mx-auto px-6 md:px-12">
+      <div class="grid md:grid-cols-12 gap-10 md:gap-14 items-start">
+        <div class="md:col-span-5 reveal">
+          <div class="sec-num mb-3">06 / Access</div>
+          <h2 class="font-disp text-3xl md:text-5xl leading-tight mb-8">蒲田駅から、三分。</h2>
+
+          <ul class="space-y-5 text-[14px] leading-relaxed">
+            <li class="flex gap-4">
+              <i class="fa-solid fa-train text-terra text-xl mt-0.5"></i>
+              <div>
+                <div class="font-medium text-base">JR京浜東北線・東急池上線・多摩川線</div>
+                <div class="text-sub text-[12px] mt-1">蒲田駅 東口から徒歩3分</div>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <i class="fa-solid fa-route text-terra text-xl mt-0.5"></i>
+              <div>
+                <div class="font-medium text-base">京急線「京急蒲田駅」</div>
+                <div class="text-sub text-[12px] mt-1">西口から徒歩10分</div>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <i class="fa-solid fa-square-parking text-terra text-xl mt-0.5"></i>
+              <div>
+                <div class="font-medium text-base">専用駐車場</div>
+                <div class="text-sub text-[12px] mt-1">なし（近隣にコインパーキング多数）</div>
+              </div>
+            </li>
+          </ul>
+
+          <div class="mt-10 p-6 bg-cream rounded-[20px] border border-line">
+            <div class="text-[11px] tracking-jumbo text-terra mb-2 font-latin">SHORTCUT</div>
+            <p class="text-[15px] leading-relaxed">
+              東口を出て、商店街を直進。<br>
+              二つ目の角を左へ曲がると、<br>
+              <span class="text-sage">緑の庇（ひさし）</span>のあるお店です。
+            </p>
+          </div>
+        </div>
+
+        <!-- 簡易マップ風カード（実装時はGoogle Maps Embed） -->
+        <div class="md:col-span-7 reveal reveal-delay-1">
+          <div class="aspect-[4/3] relative bg-cream rounded-[28px] border border-line overflow-hidden shadow-soft">
+            <div class="absolute inset-0 dots-bg opacity-50"></div>
+            <svg viewBox="0 0 400 300" class="absolute inset-0 w-full h-full">
+              <!-- 道 -->
+              <path d="M0,185 L400,185" stroke="#E3D8C6" stroke-width="14" fill="none"/>
+              <path d="M175,0 L175,300" stroke="#E3D8C6" stroke-width="10" fill="none"/>
+              <path d="M260,185 L260,45" stroke="#E3D8C6" stroke-width="6" fill="none"/>
+              <!-- 駅 -->
+              <rect x="150" y="62" width="50" height="36" rx="6" fill="#3B2A21"/>
+              <text x="175" y="85" text-anchor="middle" fill="#FBF7F0" font-family="Zen Maru Gothic" font-size="13">蒲田</text>
+              <text x="175" y="116" text-anchor="middle" fill="#3B2A21" font-family="Zen Maru Gothic" font-size="9">JR・東急 東口</text>
+              <!-- 店 -->
+              <g transform="translate(298,135)">
+                <circle r="23" fill="#C8704F"/>
+                <text x="0" y="6" text-anchor="middle" fill="#FBF7F0" font-family="Zen Maru Gothic" font-size="15">店</text>
+              </g>
+              <text x="298" y="178" text-anchor="middle" fill="#3B2A21" font-family="Zen Maru Gothic" font-size="10">カフェ＆ベーカリー</text>
+              <!-- 矢印 -->
+              <path d="M200,80 Q252,80 282,124" stroke="#C8704F" stroke-width="1.8" fill="none" stroke-dasharray="4 4"/>
+              <text x="238" y="74" fill="#C8704F" font-family="DM Serif Display" font-style="italic" font-size="13">3 min</text>
+            </svg>
+            <a href="https://maps.google.com/?q=蒲田駅" target="_blank" rel="noopener"
+               class="absolute bottom-4 right-4 inline-flex items-center gap-2 px-4 py-2 bg-espr text-milk rounded-full text-[11px] tracking-wide2 hover:bg-terra transition-colors">
+              <i class="fa-solid fa-up-right-from-square"></i> Google Mapで開く
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== INSTAGRAM CTA ============================== -->
+  <section id="instagram" class="relative py-24 md:py-36 bg-terra text-milk overflow-hidden grain">
+    <div class="absolute -right-16 -bottom-16 wash text-[260px] !text-milk/10">@</div>
+
+    <div class="max-w-[1100px] mx-auto px-6 md:px-12 relative text-center">
+      <div class="sec-num !text-milk mb-4 reveal">Instagram</div>
+      <h2 class="font-disp text-4xl md:text-6xl leading-tight reveal reveal-delay-1">
+        焼き上がりは、<br>毎朝Instagramで。
+      </h2>
+      <p class="mt-6 text-[14px] leading-loose text-milk/90 max-w-xl mx-auto reveal reveal-delay-2">
+        その日のパンのラインナップ、季節の限定メニュー、定休日のお知らせ。<br>
+        いちばん早いお知らせは、いつもInstagramから。
+      </p>
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-3 reveal reveal-delay-3">
+        <a href="https://instagram.com/" target="_blank" rel="noopener" class="btn-fill bg-milk !text-espr border-milk hover:bg-espr">
+          <span><i class="fa-brands fa-instagram mr-2"></i>@sample_kamata_cafe をフォロー</span>
+        </a>
+        <a href="#" class="btn-line border-milk text-milk hover:bg-milk hover:text-terra">
+          <i class="fa-brands fa-line"></i> LINEで取り置き
+        </a>
+      </div>
+
+      <!-- ミニ・フィードのプレビュー -->
+      <div class="mt-14 grid grid-cols-4 gap-2 md:gap-3 reveal reveal-delay-3">
+        <div class="overflow-hidden rounded-[18px] aspect-square ph-card"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80" alt="" class="ph w-full h-full object-cover"></div>
+        <div class="overflow-hidden rounded-[18px] aspect-square ph-card"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80" alt="" class="ph w-full h-full object-cover"></div>
+        <div class="overflow-hidden rounded-[18px] aspect-square ph-card"><img src="https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=400&q=80" alt="" class="ph w-full h-full object-cover"></div>
+        <div class="overflow-hidden rounded-[18px] aspect-square ph-card"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=80" alt="" class="ph w-full h-full object-cover"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== FOOTER ============================== -->
+  <footer class="relative bg-cream py-16 border-t border-line">
+    <div class="max-w-[1280px] mx-auto px-6 md:px-12">
+      <div class="grid md:grid-cols-12 gap-10">
+        <div class="md:col-span-5">
+          <div class="flex items-baseline gap-3 flex-wrap">
+            <span class="font-disp text-3xl text-terra">大田区カフェ＆ベーカリー</span>
+            <span class="text-[11px] tracking-jumbo text-sub font-latin">SAMPLE</span>
+          </div>
+          <p class="mt-4 text-[12px] leading-relaxed text-sub max-w-xs">
+            蒲田駅 東口 徒歩3分。<br>
+            自家焙煎の珈琲と、毎朝焼き上がるパン。<br>
+            朝の光と、余白のある一杯を。
+          </p>
+
+          <div class="mt-6 flex gap-2">
+            <a href="#" class="w-10 h-10 inline-flex items-center justify-center border border-espr rounded-full hover:bg-espr hover:text-milk transition-colors"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="w-10 h-10 inline-flex items-center justify-center border border-espr rounded-full hover:bg-espr hover:text-milk transition-colors"><i class="fa-brands fa-line"></i></a>
+            <a href="#" class="w-10 h-10 inline-flex items-center justify-center border border-espr rounded-full hover:bg-espr hover:text-milk transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+          </div>
+        </div>
+
+        <div class="md:col-span-3">
+          <div class="text-[11px] tracking-jumbo text-sub mb-4 font-latin">MENU</div>
+          <ul class="space-y-2 text-[13px]">
+            <li><a href="#concept" class="hover:text-terra">コンセプト</a></li>
+            <li><a href="#menu" class="hover:text-terra">メニュー</a></li>
+            <li><a href="#gallery" class="hover:text-terra">ギャラリー</a></li>
+            <li><a href="#takeout" class="hover:text-terra">テイクアウト</a></li>
+            <li><a href="#info" class="hover:text-terra">店舗情報</a></li>
+          </ul>
+        </div>
+
+        <div class="md:col-span-4">
+          <div class="text-[11px] tracking-jumbo text-sub mb-4 font-latin">SHOP</div>
+          <ul class="space-y-2 text-[13px]">
+            <li>東京都大田区蒲田4-XX-XX 蒲田グリーンビル 1F</li>
+            <li>TEL: 03-0000-0000</li>
+            <li>営業: 8:00 — 19:00 ／ 土日祝 〜18:00</li>
+            <li>定休: 火曜日</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="hair my-10"></div>
+
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] tracking-wide2 text-sub">
+        <div>© 2026 大田区カフェ＆ベーカリー（SNSコンサル提案用サンプル）</div>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:text-terra">プライバシーポリシー</a>
+          <span class="opacity-50">／</span>
+          <a href="#" class="hover:text-terra">特定商取引法</a>
+          <span class="opacity-50">／</span>
+          <span class="font-latin">Brewed for slow mornings.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================== MOBILE FIXED CTA ============================== -->
+  <div class="mobile-cta fixed bottom-0 left-0 right-0 z-50 bg-cream/95 backdrop-blur border-t border-line px-4 py-3 flex items-center gap-2">
+    <a href="#menu" class="flex-1 inline-flex items-center justify-center gap-2 py-3 border border-espr rounded-full text-espr text-[12px] tracking-wide2">
+      <i class="fa-solid fa-mug-hot"></i> メニュー
+    </a>
+    <a href="#instagram" class="flex-1 inline-flex items-center justify-center gap-2 py-3 bg-terra text-milk rounded-full text-[12px] tracking-wide2">
+      <i class="fa-brands fa-instagram"></i> フォロー
+    </a>
+  </div>
+
+  <!-- ============================== SCRIPT ============================== -->
+  <script>
+    // ヘッダー吸着
+    const nav = document.getElementById('nav');
+    const onScroll = () => {
+      if (window.scrollY > 60) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // リビールアニメーション
+    const io = new IntersectionObserver((es) => {
+      es.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+
+</body>
+</html>
